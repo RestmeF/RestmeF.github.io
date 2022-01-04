@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>树莓派4B 安装Kali | Riddler's Blog</title><meta name="keywords" content="test"><meta name="author" content="Riddler"><meta name="copyright" content="Riddler"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="使用树莓派装个Kali 顺便挂载一块硬盘给数据库用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派4B 安装Kali">
+<meta property="og:url" content="http://riddlerm.github.io/2022/01/04/%E6%A0%91%E8%8E%93%E6%B4%BE4B-%E5%AE%89%E8%A3%85Kali/index.html">
+<meta property="og:site_name" content="Riddler&#39;s Blog">
+<meta property="og:description" content="使用树莓派装个Kali 顺便挂载一块硬盘给数据库用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210718214808135.png">
+<meta property="article:published_time" content="2022-01-04T12:22:19.000Z">
+<meta property="article:modified_time" content="2022-01-04T13:12:31.535Z">
+<meta property="article:author" content="Riddler">
+<meta property="article:tag" content="树莓派">
+<meta property="article:tag" content="Kali">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210718214808135.png"><link rel="shortcut icon" href="/"><link rel="canonical" href="http://riddlerm.github.io/2022/01/04/%E6%A0%91%E8%8E%93%E6%B4%BE4B-%E5%AE%89%E8%A3%85Kali/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f81b5d84e4bdc4af11ff40d4ae8aee38";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"CGPIG604DI","apiKey":"e50317aef2bf77a1f663422684b2a897","indexName":"blogsearch","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '树莓派4B 安装Kali',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-04 21:12:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://thirdqq.qlogo.cn/g?b=oidb&amp;k=LMGBgwOams2fZdeTFTEk8g&amp;s=100" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img-blog.csdnimg.cn/20210718214808135.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Riddler's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">树莓派4B 安装Kali</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-04T12:22:19.000Z" title="发表于 2022-01-04 20:22:19">2022-01-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-04T13:12:31.535Z" title="更新于 2022-01-04 21:12:31">2022-01-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9E%8E%E6%90%9E/">瞎搞</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="树莓派4B 安装Kali"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="0x01-下载并安装镜像"><a href="#0x01-下载并安装镜像" class="headerlink" title="0x01 下载并安装镜像"></a>0x01 下载并安装镜像</h1><p><a target="_blank" rel="noopener" href="https://www.kali.org/get-kali/#kali-bare-metal">Get Kali | Kali Linux</a></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/47818b59b1628656c3e3706328a811d4.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>下载如果很慢可以上传种子到各种网盘进行离线下载，再从网盘下载。</p>
+<p>用Win32DiskImager将img文件写入SD卡，写入成功后直接插到树莓派里 通电</p>
+<h1 id="0x02-无显示屏-开机"><a href="#0x02-无显示屏-开机" class="headerlink" title="0x02 无显示屏 开机"></a>0x02 无显示屏 开机</h1><p>因为没有显示器，所以用SSH连接树莓派</p>
+<p>kali默认会开启SSH，可以通过 wifi或者其他方式连接树莓派。</p>
+<p>我使用网线将电脑和树莓派连接<br> 将树莓派和电脑用网线相连，打开设置-&gt;网络和Internet-&gt;状态-&gt;更改适配器设置，将 WLAN 共享给以太网，这样树莓派就可以联网了。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210718204218393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>在 cmd 中输入 arp -a 命令，</p>
+<p><img src="https://img-blog.csdnimg.cn/20210718204331477.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> 找到树莓派的IP(开放了22端口) 手动试或者直接检测端口</p>
+<p><img src="https://img-blog.csdnimg.cn/2021071820442715.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> 用Xshell连接 用户名密码都为kali</p>
+<p><img src="https://img-blog.csdnimg.cn/20210718204519978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>使用 sudo passwd root 更改root的密码</p>
+<p>su root 切换到root用户</p>
+<h1 id="0x03-换源"><a href="#0x03-换源" class="headerlink" title="0x03 换源"></a>0x03 换源</h1><p>使用 vim /etc/apt/sources.list 添加以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#aliyun</span><br><span class="line">deb http://mirrors.aliyun.com/kali kali-rolling main non-free contrib</span><br><span class="line">deb-src http://mirrors.aliyun.com/kali kali-rolling main non-free contrib</span><br><span class="line"></span><br><span class="line">#ustc</span><br><span class="line">deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>按i进入编辑，按esc退出编辑 再按 :wq 退出</p>
+<p>使用下面命令更新源</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get upgrade &amp;&amp; apt-get clean  #更新源</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h1 id="0x04-SSH连接"><a href="#0x04-SSH连接" class="headerlink" title="0x04 SSH连接"></a>0x04 SSH连接</h1><p>这里使用vnc连接，tightvncserver是kali默认安装的</p>
+<p>配置tightvncserver<br> 在终端输入tightvncserver 会提示输入密码，我们输入我们的密码（需要注意的是，这个密码是vnc连接的密码。）</p>
+<p>连接vnc<br> 主机名：ip:1<br> 用户名：root<br> 密码：刚才自己输入的密码<br> 注意ip后面必须填写 :1</p>
+<p><img src="https://img-blog.csdnimg.cn/2021071820553198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> <img src="https://img-blog.csdnimg.cn/20210718205710789.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>可能会出现 这种情况 灰屏</p>
+<p> <img src="https://img-blog.csdnimg.cn/20210718205745527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>使用 vim /root/.vnc/xstartup 更换为以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">unset SESSION_MANAGER</span><br><span class="line">unset DBUS_SESSION_BUS_ADDRESS</span><br><span class="line">startxfce4 &amp;</span><br><span class="line"></span><br><span class="line">[ -x /etc/vnc/xstartup ] &amp;&amp; exec /etc/vnc/xstartup</span><br><span class="line">[ -r $HOME/.Xresources ] &amp;&amp; xrdb $HOME/.Xresources</span><br><span class="line">xsetroot -solid grey</span><br><span class="line">vncconfig -iconic &amp;</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> 给<code>xstartup</code>权限</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chown root /root/.vnc/xstartup</span><br><span class="line">chmod 755 /root/.vnc/xstartup</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>然后我们关闭掉vncserver的服务：tightvncserver -kill :1</p>
+<p>在此启动vncserver的服务程序：tightvncserver 或者使用vncserver :1</p>
+<p> <img src="https://img-blog.csdnimg.cn/20210718214808135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h1 id="0x05-剩余空间分配"><a href="#0x05-剩余空间分配" class="headerlink" title="0x05 剩余空间分配"></a>0x05 剩余空间分配</h1><p><img src="https://img-blog.csdnimg.cn/20210718214834138.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>调整到最大，然后选择 应用 </p>
+<p><img src="https://img-blog.csdnimg.cn/20210718214955700.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>保存后，再运行一次更新源的命令。(刚才因为空间不足没有更新完)</p>
+<h1 id="0x06-设置时间-地区-语言等"><a href="#0x06-设置时间-地区-语言等" class="headerlink" title="0x06 设置时间 地区 语言等"></a>0x06 设置时间 地区 语言等</h1><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210718220518504.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h2 id="选择-04-Localisation-Options"><a href="#选择-04-Localisation-Options" class="headerlink" title="选择 04 Localisation Options"></a>选择 04 <code>Localisation Options</code></h2><h3 id="Change-Locale-选择所在国家"><a href="#Change-Locale-选择所在国家" class="headerlink" title="Change Locale 选择所在国家"></a><code>Change Locale </code>选择所在国家</h3><p><img src="https://img-blog.csdnimg.cn/20210718220658811.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这是一串很长的列表，到这个列表的最下面，让光标指在zh_CN.UTF-8 UTF-8前面，先按空格，再按回车，回到之前的界面再按回车。 </p>
+<p><img src="https://img-blog.csdnimg.cn/20210718220829496.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h3 id="Change-Timezone-选择所在时区"><a href="#Change-Timezone-选择所在时区" class="headerlink" title="Change Timezone 选择所在时区"></a><code>Change Timezone </code>选择所在时区</h3><p> 选择<code>Asia</code>，再选择<code>Shanghai</code>，回车确定。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210718221036609.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20210718221045683.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h3 id="Change-Wi-fi-Country-选择wifi国家"><a href="#Change-Wi-fi-Country-选择wifi国家" class="headerlink" title="Change Wi-fi Country 选择wifi国家"></a><code>Change Wi-fi Country </code>选择wifi国家</h3><p>选择<code>CN China</code>，回车</p>
+<p> <img src="https://img-blog.csdnimg.cn/20210718221221385.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> 选择 Finish 保存</p>
+<p><img src="https://img-blog.csdnimg.cn/202107182214503.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h1 id="0x07-配置wifi"><a href="#0x07-配置wifi" class="headerlink" title="0x07 配置wifi"></a>0x07 配置wifi</h1><h3 id="wpa-supplicant-conf配置"><a href="#wpa-supplicant-conf配置" class="headerlink" title="wpa_supplicant.conf配置"></a>wpa_supplicant.conf配置</h3><p>进入<code>/etc/wpa_supplicant</code>目录，然后使用系统自带的<code>wpa_passphrase</code>命令创建一个配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /etc/wpa_supplicant/</span><br><span class="line">wpa_passphrase &quot;ssid&quot; &quot;12345678&quot; &gt; wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>第一个参数为<code>ssid</code>网络名称，第二个为<code>key</code>，写到<code>wpa_supplicant.conf</code>配置文件中</p>
+<h3 id="interfaces配置"><a href="#interfaces配置" class="headerlink" title="interfaces配置"></a>interfaces配置</h3><p>我们编辑<code>/etc/network/interfaces</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi /etc/network/interfaces</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>在最后加上如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto wlan0</span><br><span class="line">allow-hotplug wlan0</span><br><span class="line">iface wlan0 inet manual</span><br><span class="line">wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf</span><br><span class="line">iface default inet dhcp</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210719123033725.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>意思就是启动wlan0网路接口，然后加载刚刚添加的配置文件进行连接。</p>
+<p>如上都配置完毕，保存，reboot后,树莓派会自动连接wifi。</p>
+<h1 id="1x01-启动mysql-mariadb"><a href="#1x01-启动mysql-mariadb" class="headerlink" title="1x01 启动mysql(mariadb)"></a>1x01 启动mysql(mariadb)</h1><p>输入mysql -u root -p</p>
+<p>报错：ERROR 2002 (HY000): Can’t connect to local MySQL server through socket ‘/run/mysqld/mysqld.sock’ (2)</p>
+<p>使用 netstat -ant 查看并没有3306端口，所以mysql可能还没启动</p>
+<p>使用 service mysql start 启动mysql</p>
+<p>输入mysql 直接进入 mariadb</p>
+<p><img src="https://img-blog.csdnimg.cn/20210718224101255.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h1 id="1x02-开启远程访问mysql"><a href="#1x02-开启远程访问mysql" class="headerlink" title="1x02 开启远程访问mysql"></a>1x02 开启远程访问mysql</h1><h2 id="创建远程访问用户"><a href="#创建远程访问用户" class="headerlink" title="创建远程访问用户"></a>创建远程访问用户</h2><p>进入mysql输入以下语句创建用户</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GRANT ALL PRIVILEGES ON *.* TO &#x27;root&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;root&#x27; WITH GRANT OPTION;    //第一个root表示用户名，%表示所有的电脑都可以连接，也可以设置某个ip地址运行连接，第二个root表示密码</span><br><span class="line">flush privileges;  //命令立即生效</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>查询创建用户</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT DISTINCT CONCAT(&#x27;User: &#x27;&#x27;&#x27;,user,&#x27;&#x27;&#x27;@&#x27;&#x27;&#x27;,host,&#x27;&#x27;&#x27;;&#x27;) AS query FROM mysql.user;</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210718225121263.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h2 id="设置远程访问ip"><a href="#设置远程访问ip" class="headerlink" title="设置远程访问ip"></a>设置远程访问ip</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">exit  //退出数据库</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>使用 netstat -ant 可以看到mysql 对应的是 127.0.0.1:3306 </p>
+<p><img src="https://img-blog.csdnimg.cn/20210718224505938.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>使用vim打开配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim /etc/mysql/mariadb.conf.d/50-server.cnf</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210718225535556.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>将bind-address = 127.0.0.1 改为 bind-address = 0.0.0.0</p>
+<p> 重启mysql</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service mysql restart</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>现在已经成了0.0.0.0:3306<img src="https://img-blog.csdnimg.cn/20210718225723798.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> 使用 Navicat Premium 连接 帐号密码都为root</p>
+<p>选择 Mysql 或者 MariaDB 都能连上</p>
+<p><img src="https://img-blog.csdnimg.cn/20210718225956341.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>设置开启自启</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl enable mysql</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h1 id="1x03-挂载移动硬盘"><a href="#1x03-挂载移动硬盘" class="headerlink" title="1x03 挂载移动硬盘"></a>1x03 挂载移动硬盘</h1><h2 id="开始挂载"><a href="#开始挂载" class="headerlink" title="开始挂载"></a>开始挂载</h2><ul>
+<li>查看树莓派上的磁盘(截图中/dev/sda1为移动硬盘)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210719001922330.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li> 使用命令挂载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo mkdir /home/pi/data</span><br><span class="line">sudo mount /dev/sda1  /home/pi/data</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>查看磁盘挂载结果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210719012814258.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li> 开机自动挂载移动硬盘到/home/pi/data</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/fstab</span><br><span class="line"></span><br><span class="line">#添加自动挂载</span><br><span class="line">/dev/sda2   /home/pi/data   ext4    rw,defaults 0   0</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210719013559883.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h2 id="切换mysql-mariadb-的存储位置"><a href="#切换mysql-mariadb-的存储位置" class="headerlink" title="切换mysql(mariadb)的存储位置"></a>切换mysql(mariadb)的存储位置</h2><ul>
+<li>停止mysql</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo service mariadb stop</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>拷贝mysql数据文件到移动硬盘</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /home/pi/data</span><br><span class="line"></span><br><span class="line">#移动硬盘创建数据文件夹</span><br><span class="line">mkdir -p mysql_data/mysql</span><br><span class="line"></span><br><span class="line">#修改所有者信息</span><br><span class="line">sudo chown -R mysql:mysql mysql_data</span><br><span class="line"></span><br><span class="line">#复制文件</span><br><span class="line">sudo mv /var/lib/mysql/* /home/pi/data/mysql_data/mysql</span><br><span class="line"></span><br><span class="line">#文件夹bind</span><br><span class="line">sudo mount -o bind /home/pi/data/mysql_data/mysql /var/lib/mysql</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>启动mysql</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo service mariadb start</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210719014546980.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM1NTIwMTI=,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>开机bind文件夹关系</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/fstab</span><br><span class="line"></span><br><span class="line">#添加自动挂载</span><br><span class="line">/home/pi/data/mysql_data/mysql  /var/lib/mysql  none    defaults,bind   0   2</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210719013617558.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<h3 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果移动硬盘是在Windows下架格式化的(NTFS格式),  是不能修改owner的</span><br><span class="line"></span><br><span class="line">sudo chown会报错, 不能修改拥有者</span><br><span class="line"></span><br><span class="line">解决办法: 移动硬盘格式化为ext4格式(挂载情况下不能格式化)</span><br><span class="line"></span><br><span class="line">mkfs -t ext4 /dev/sda2</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bf421d52db9c">树莓派下mysql(mariadb)更改数据存放位置到移动硬盘上 - 简书</a></p>
+<p>​      <a target="_blank" rel="noopener" href="https://blog.bbskali.cn/1582.html">树莓派4B安装Kali Linux - Kali’s Blog</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Riddler</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://riddlerm.github.io/2022/01/04/%E6%A0%91%E8%8E%93%E6%B4%BE4B-%E5%AE%89%E8%A3%85Kali/">http://riddlerm.github.io/2022/01/04/%E6%A0%91%E8%8E%93%E6%B4%BE4B-%E5%AE%89%E8%A3%85Kali/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://riddlerm.github.io" target="_blank">Riddler's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/">树莓派</a><a class="post-meta__tags" href="/tags/Kali/">Kali</a></div><div class="post_share"><div class="social-share" data-image="https://img-blog.csdnimg.cn/20210718214808135.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2022/01/03/hello-world/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/riddlerm/riddlerm.github.io/imgs/default_fm.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hello World</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://thirdqq.qlogo.cn/g?b=oidb&amp;k=LMGBgwOams2fZdeTFTEk8g&amp;s=100" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Riddler</div><div class="author-info__description">Riddler's Blog</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RiddlerM"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F"><span class="toc-number">1.</span> <span class="toc-text">0x01 下载并安装镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-%E6%97%A0%E6%98%BE%E7%A4%BA%E5%B1%8F-%E5%BC%80%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">0x02 无显示屏 开机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x03-%E6%8D%A2%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">0x03 换源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x04-SSH%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">0x04 SSH连接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x05-%E5%89%A9%E4%BD%99%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D"><span class="toc-number">5.</span> <span class="toc-text">0x05 剩余空间分配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x06-%E8%AE%BE%E7%BD%AE%E6%97%B6%E9%97%B4-%E5%9C%B0%E5%8C%BA-%E8%AF%AD%E8%A8%80%E7%AD%89"><span class="toc-number">6.</span> <span class="toc-text">0x06 设置时间 地区 语言等</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9-04-Localisation-Options"><span class="toc-number">6.1.</span> <span class="toc-text">选择 04 Localisation Options</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Change-Locale-%E9%80%89%E6%8B%A9%E6%89%80%E5%9C%A8%E5%9B%BD%E5%AE%B6"><span class="toc-number">6.1.1.</span> <span class="toc-text">Change Locale 选择所在国家</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Change-Timezone-%E9%80%89%E6%8B%A9%E6%89%80%E5%9C%A8%E6%97%B6%E5%8C%BA"><span class="toc-number">6.1.2.</span> <span class="toc-text">Change Timezone 选择所在时区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Change-Wi-fi-Country-%E9%80%89%E6%8B%A9wifi%E5%9B%BD%E5%AE%B6"><span class="toc-number">6.1.3.</span> <span class="toc-text">Change Wi-fi Country 选择wifi国家</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x07-%E9%85%8D%E7%BD%AEwifi"><span class="toc-number">7.</span> <span class="toc-text">0x07 配置wifi</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wpa-supplicant-conf%E9%85%8D%E7%BD%AE"><span class="toc-number">7.0.1.</span> <span class="toc-text">wpa_supplicant.conf配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#interfaces%E9%85%8D%E7%BD%AE"><span class="toc-number">7.0.2.</span> <span class="toc-text">interfaces配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1x01-%E5%90%AF%E5%8A%A8mysql-mariadb"><span class="toc-number">8.</span> <span class="toc-text">1x01 启动mysql(mariadb)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1x02-%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AEmysql"><span class="toc-number">9.</span> <span class="toc-text">1x02 开启远程访问mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE%E7%94%A8%E6%88%B7"><span class="toc-number">9.1.</span> <span class="toc-text">创建远程访问用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AEip"><span class="toc-number">9.2.</span> <span class="toc-text">设置远程访问ip</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1x03-%E6%8C%82%E8%BD%BD%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98"><span class="toc-number">10.</span> <span class="toc-text">1x03 挂载移动硬盘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E6%8C%82%E8%BD%BD"><span class="toc-number">10.1.</span> <span class="toc-text">开始挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E6%8D%A2mysql-mariadb-%E7%9A%84%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="toc-number">10.2.</span> <span class="toc-text">切换mysql(mariadb)的存储位置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="toc-number">10.2.1.</span> <span class="toc-text">补充说明</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/04/%E6%A0%91%E8%8E%93%E6%B4%BE4B-%E5%AE%89%E8%A3%85Kali/" title="树莓派4B 安装Kali"><img src="https://img-blog.csdnimg.cn/20210718214808135.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="树莓派4B 安装Kali"/></a><div class="content"><a class="title" href="/2022/01/04/%E6%A0%91%E8%8E%93%E6%B4%BE4B-%E5%AE%89%E8%A3%85Kali/" title="树莓派4B 安装Kali">树莓派4B 安装Kali</a><time datetime="2022-01-04T12:22:19.000Z" title="发表于 2022-01-04 20:22:19">2022-01-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/03/hello-world/" title="Hello World"><img src="https://cdn.jsdelivr.net/gh/riddlerm/riddlerm.github.io/imgs/default_fm.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/01/03/hello-world/" title="Hello World">Hello World</a><time datetime="2022-01-03T13:31:51.219Z" title="发表于 2022-01-03 21:31:51">2022-01-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Riddler</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://blog-api-m75hv7ilc-riddlerm.vercel.app',
+      avatar: 'wavatar',
+      avatarCDN: 'https://sdn.geekzu.org/avatar/',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline() 
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
