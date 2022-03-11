@@ -101,13 +101,6 @@
 
   
   <url>
-    <loc>http://riddlerm.github.io/tags/%E5%85%94%E5%B0%8F%E5%B7%A2/</loc>
-    <lastmod>2022-03-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://riddlerm.github.io/tags/Windows/</loc>
     <lastmod>2022-03-11</lastmod>
     <changefreq>weekly</changefreq>
@@ -130,6 +123,13 @@
   
   <url>
     <loc>http://riddlerm.github.io/tags/CS%E5%85%8D%E6%9D%80/</loc>
+    <lastmod>2022-03-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://riddlerm.github.io/tags/%E5%85%94%E5%B0%8F%E5%B7%A2/</loc>
     <lastmod>2022-03-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
