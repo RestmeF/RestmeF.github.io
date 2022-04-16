@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>软路由折腾记 | Riddler's Blog</title><meta name="keywords" content="树莓派,kali,软路由,openwrt,AdGuard Home,Passwall,Smart Dns"><meta name="author" content="Riddler"><meta name="copyright" content="Riddler"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="用闲置的树莓派和硬盘，用docker搭建了openwrt做旁路由和SMB共享文件夹，使用了SmartDns+Passwall+Adguard Home插件的组合优化网络。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软路由折腾记">
+<meta property="og:url" content="http://riddlerm.github.io/posts/25115/index.html">
+<meta property="og:site_name" content="Riddler&#39;s Blog">
+<meta property="og:description" content="用闲置的树莓派和硬盘，用docker搭建了openwrt做旁路由和SMB共享文件夹，使用了SmartDns+Passwall+Adguard Home插件的组合优化网络。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220417000133250.png">
+<meta property="article:published_time" content="2022-04-16T11:07:39.000Z">
+<meta property="article:modified_time" content="2022-04-16T16:32:36.588Z">
+<meta property="article:author" content="Riddler">
+<meta property="article:tag" content="树莓派">
+<meta property="article:tag" content="kali">
+<meta property="article:tag" content="软路由">
+<meta property="article:tag" content="openwrt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220417000133250.png"><link rel="shortcut icon" href="/"><link rel="canonical" href="http://riddlerm.github.io/posts/25115/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f81b5d84e4bdc4af11ff40d4ae8aee38";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"CGPIG604DI","apiKey":"e50317aef2bf77a1f663422684b2a897","indexName":"blogsearch","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '软路由折腾记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-17 00:32:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://thirdqq.qlogo.cn/g?b=oidb&amp;k=LMGBgwOams2fZdeTFTEk8g&amp;s=100" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220417000738764.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Riddler's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">软路由折腾记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-16T11:07:39.000Z" title="发表于 2022-04-16 19:07:39">2022-04-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-16T16:32:36.588Z" title="更新于 2022-04-17 00:32:36">2022-04-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="软路由折腾记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前文已经说了，去年这时候入手了一台树莓派4B 8G内存的<code>(OS：今天这个配置价格已经翻倍了，还好买的早！)</code>，装了kali后就挂载了我的5T的硬盘，给Mysql放数据库用，其他就日常用用CS，跑打卡脚本，其他就闲置了。</p>
+<p>前几天想着搞个软路由玩玩，本来是想买个路由器刷openwrt当主路由，不过还要把现在的这个路由器卖了，太折腾了。想到我的树莓派还在闲置，但是又不想丢掉我的kali，况且树莓派只用来跑openwrt实在是大材小用了，于是想有没有docker版的openwrt？</p>
+<p>用docker搜了一下镜像，还真有！</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416193145620.png" alt="image-20220416193145620"></p>
+<p>于是便开始了折腾之旅</p>
+<h1 id="安装opwnwrt"><a href="#安装opwnwrt" class="headerlink" title="安装opwnwrt"></a>安装opwnwrt</h1><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><p>将网线从路由器的Lan口插到了树莓派上。</p>
+<p>通过<code>ifconfig</code>命令，查看eth0的ip地址。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416200037227.png" alt="image-20220416200037227"></p>
+<p>我这里是<code>192.168.1.104</code>，所以树莓派所处在的网段是<code>192.168.1.0/24</code>，这个后面会一直要用到。</p>
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>kali还没安装docker，于是先安装docker和docker-compose</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 安装docker</span><br><span class="line">sudo apt install docker.io</span><br><span class="line"></span><br><span class="line"># 安装 docker-compose：</span><br><span class="line">apt install docker-compose</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="选择镜像"><a href="#选择镜像" class="headerlink" title="选择镜像"></a>选择镜像</h2><p>搜索出来的镜像有很多个，思考了一下，选择了第一个。<code>sulinggg/openwrt</code></p>
+<p>来到dockerhub，看一下这个镜像的介绍。</p>
+<p><a target="_blank" rel="noopener" href="https://registry.hub.docker.com/r/sulinggg/openwrt">https://registry.hub.docker.com/r/sulinggg/openwrt</a></p>
+<blockquote>
+<p>本项目旨在构建适用于树莓派 1~4 、适用于 armv6/armv7/armv8(aarch64)/x86_64(amd64) 平台设备的 OpenWrt 镜像 (每日更新)。</p>
+</blockquote>
+<p><code>适用于树莓派</code>？那不是刚刚好。</p>
+<p>翻到最后可以看到有一篇记录使用教程的<a target="_blank" rel="noopener" href="https://mlapp.cn/376.html">博客</a></p>
+<p>于是便跟着博客复现。</p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><p>简要写一下使用到的命令，详细的命令解释可以看原博客。</p>
+<h3 id="1-打开网卡混杂模式"><a href="#1-打开网卡混杂模式" class="headerlink" title="1.打开网卡混杂模式"></a>1.打开网卡混杂模式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo ip link set eth0 promisc on </span><br></pre></td></tr></table></figure>
+
+<h3 id="2-创建网络"><a href="#2-创建网络" class="headerlink" title="2.创建网络"></a>2.创建网络</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker network create -d macvlan --subnet=192.168.1.0/24 --gateway=192.168.1.1 -o parent=eth0 macnet</span><br></pre></td></tr></table></figure>
+
+<p><code>192.168.1.1</code>要换成</p>
+<p>此时，我们使用 <code>docker network ls</code>命令可以看到网络<code>macnet</code>已建立成功：</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416195811981.png" alt="image-20220416195811981"></p>
+<h3 id="3-拉取镜像"><a href="#3-拉取镜像" class="headerlink" title="3.拉取镜像"></a>3.拉取镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 用阿里云镜像提速</span><br><span class="line"># 若拉取镜像时不加任何标签，则将使用 latest 标签拉取镜像，latest 指向的镜像与树莓派 2B 镜像实际上为同一镜像。</span><br><span class="line"></span><br><span class="line"># 树莓派4版本</span><br><span class="line">docker pull registry.cn-shanghai.aliyuncs.com/suling/openwrt:rpi4</span><br></pre></td></tr></table></figure>
+
+<p>镜像拉取完成后，我们可以执行<code>docker images</code>命令查看现存镜像：</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416200322472.png" alt="image-20220416200322472"></p>
+<h3 id="4-创建并启动容器"><a href="#4-创建并启动容器" class="headerlink" title="4.创建并启动容器"></a>4.创建并启动容器</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run --restart always --name openwrt -d --network macnet --privileged registry.cn-shanghai.aliyuncs.com/suling/openwrt:latest /sbin/init</span><br></pre></td></tr></table></figure>
+
+<p>启动容器后，我们可以使用 <code>docker ps</code>命令查看当前运行的容器：</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416200616122.png" alt="image-20220416200616122"></p>
+<p><code>docker ps -a</code>命令可以查看所有状态的容器，包括正在运行和停止的。</p>
+<h3 id="5-进入容器并修改相关参数"><a href="#5-进入容器并修改相关参数" class="headerlink" title="5.进入容器并修改相关参数"></a>5.进入容器并修改相关参数</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 进入容器 openwrt为容器名称</span><br><span class="line">docker exec -it openwrt bash</span><br><span class="line"></span><br><span class="line"># 修改openwrt的网络配置</span><br><span class="line">vim /etc/config/network</span><br></pre></td></tr></table></figure>
+
+<p>修改lan口的配置，把相关的值换成自己的网段。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416200841071.png" alt="image-20220416200841071"></p>
+<p>按<code>ESC</code>，然后输入<code>:wq</code>保存并退出。</p>
+<h3 id="6-重启网络"><a href="#6-重启网络" class="headerlink" title="6.重启网络"></a>6.重启网络</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/etc/init.d/network restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-进入控制面板"><a href="#7-进入控制面板" class="headerlink" title="7.进入控制面板"></a>7.进入控制面板</h3><p>后台地址为刚才给 <code>ipaddr</code>参数配置的值<code>192.168.1.200</code></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416201136004.png" alt="image-20220416201136004"></p>
+<p>用户名：<code>root</code></p>
+<p>密码：<code>password</code></p>
+<h3 id="8-关闭-DHCP-服务"><a href="#8-关闭-DHCP-服务" class="headerlink" title="8.关闭 DHCP 服务"></a>8.关闭 DHCP 服务</h3><p>因为我们是想用openwrt来当旁路由，DHCP的任务交给路由器了，所以我们要在openwrt里把DHCP功能关掉。</p>
+<p>在 <code>网络</code> - <code>接口</code> - <code>Lan</code> - <code>修改</code>，界面中，勾选下方的 <code>忽略此接口（不在此接口提供 DHCP 服务）</code>，并<code>保存&amp;应用</code>。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416201554317.png" alt="image-20220416201554317"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231151773.png" alt="image-20220416231151773"></p>
+<h3 id="9-主路由-DHCP-设置"><a href="#9-主路由-DHCP-设置" class="headerlink" title="9.主路由 DHCP 设置"></a>9.主路由 DHCP 设置</h3><p>进入路由器后台中，将主路由的 DHCP 的<code>网关</code>和 <code>DNS 服务器</code>设置为第 5 步中<code>option ipaddr </code>项目中的 IP。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416201808957.png" alt="image-20220416201808957"></p>
+<h3 id="10-重新连接路由器"><a href="#10-重新连接路由器" class="headerlink" title="10.重新连接路由器"></a>10.重新连接路由器</h3><p>完成以上操作后，断开设备（如手机，电脑）与路由器的连接，重新连接路由器。</p>
+<p>连接到路由器的设备的<code>路由器(网关)</code>将会设置为我们配置的 IP。</p>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416202004856.png" alt="image-20220416202004856" style="zoom: 80%;" />
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在原博客中提到了，<code>宿主机网络修复</code>还有其他一些问题，我这里并没有遇到，所以直接忽略跳过。</p>
+<h2 id="openwrt展示"><a href="#openwrt展示" class="headerlink" title="openwrt展示"></a>openwrt展示</h2><h2 id="界面截图"><a href="#界面截图" class="headerlink" title="界面截图"></a>界面截图</h2><p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416212101694.png" alt="image-20220416212101694"></p>
+<h2 id="功能列表截图"><a href="#功能列表截图" class="headerlink" title="功能列表截图"></a>功能列表截图</h2><p>这些是安装好容器后的所有功能和插件。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416203433673.png" alt="image-20220416203433673"></p>
+<h1 id="openwrt配置"><a href="#openwrt配置" class="headerlink" title="openwrt配置"></a>openwrt配置</h1><h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>自带的插件比较精简，如果想自己添加一些插件也可以通过 <code>系统</code>-<code>软件包</code>，来输入包名来下载。</p>
+<p>注意：首次使用需要先点击<code>刷新列表</code>。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416210800096.png" alt="image-20220416210800096"></p>
+<p>附一个，<a target="_blank" rel="noopener" href="https://www.right.com.cn/forum/thread-3682029-1-1.html">插件名与包名的对照表</a>。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416225349326.png" alt="image-20220416225349326"></p>
+<p>如果碰到这种有三种结果的插件，推荐安装顺序：插件-luci-语言包</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416211108202.png" alt="image-20220416211108202"></p>
+<h2 id="配置常用插件"><a href="#配置常用插件" class="headerlink" title="配置常用插件"></a>配置常用插件</h2><p>我这里使用的是 Passwall + SmartDNS + AdGuard Home，所以以下的配置都是根据这种搭配配置的，如果不是这种情况，可能有些地方的配置会不一样。</p>
+<h3 id="SmartDns"><a href="#SmartDns" class="headerlink" title="SmartDns"></a>SmartDns</h3><p>官方教程：<a target="_blank" rel="noopener" href="https://pymumu.github.io/smartdns/">https://pymumu.github.io/smartdns/</a></p>
+<h4 id="常规设置"><a href="#常规设置" class="headerlink" title="常规设置"></a>常规设置</h4><p>配置如图所示，注意重定向选择：<code>无</code></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416211518698.png" alt="image-20220416211518698"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416211551527.png" alt="image-20220416211518698"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416211608288.png" alt="image-20220416211518698"></p>
+<h4 id="第二服务器设置"><a href="#第二服务器设置" class="headerlink" title="第二服务器设置"></a>第二服务器设置</h4><p>这里是配置国外DNS服务器的</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416212237081.png" alt="image-20220416211518698"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416212302801.png" alt="image-20220416211518698"></p>
+<p>服务器组要填写<code>us</code>，后面要用到。</p>
+<h4 id="上游服务器配置"><a href="#上游服务器配置" class="headerlink" title="上游服务器配置"></a>上游服务器配置</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 国内DNS服务器</span><br><span class="line">223.5.5.5</span><br><span class="line">114.114.114.114</span><br><span class="line">119.29.29.29</span><br><span class="line">180.76.76.76</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 国外DNS服务器</span><br><span class="line">8.8.8.8</span><br><span class="line">8.8.4.4</span><br></pre></td></tr></table></figure>
+
+
+<p>这两个为运营商DNS，可以去路由器后台查看。运营商DNS有时候还是挺快的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">211.138.24.66</span><br><span class="line">211.138.30.66</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416213101741.png" alt="image-20220416213101741"></p>
+<p>上游DNS服务器里这里有几处需要注意的地方，</p>
+<ul>
+<li><p>国内的DNS服务端口是53，国外的是853</p>
+</li>
+<li><p>国内的DNS服务协议是udp，国外的是tls</p>
+</li>
+<li><p>添加好服务器后，需要点击<code>修改</code>，服务器组国内的写<code>cn</code>，国外的写<code>us</code></p>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416211908095.png" alt="image-20220416211908095"/></li>
+</ul>
+<img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416211935715.png" alt="image-20220416211935715"/>
+
+<h3 id="Passall"><a href="#Passall" class="headerlink" title="Passall"></a>Passall</h3><h4 id="基本设置"><a href="#基本设置" class="headerlink" title="基本设置"></a>基本设置</h4><h5 id="主要"><a href="#主要" class="headerlink" title="主要"></a>主要</h5><p>这里打开主开关，TCP节点等添加节点后选择即可。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416213804553.png" alt="image-20220416213804553"></p>
+<h5 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h5><p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416213825684.png" alt="image-20220416213825684"></p>
+<ul>
+<li><p>过滤模式 在网上看到的别人的版本大部分和容器这个版本都不一样，试了试其他几个选项，都不能用，只有这个 <code>通过UDP请求DNS</code>可以正常用。</p>
+</li>
+<li><p>远程DNS，其实这里应该是要填写 <code>192.168.1.200#7913</code>(对应SmartDns里的第二服务器端口)，但是还是不成功，只能换成了<code>8.8.4.4</code></p>
+</li>
+<li><p>有时候配置好不生效，可以点击一下<code>清空IPSET</code>以及在cmd使用<code>ipconfig /flushdns</code>清除dns缓存。</p>
+</li>
+</ul>
+<h5 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h5><p>这里我选择的默认，也可以根据自己的需求去选择。</p>
+<p>  <img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416214635543.png" alt="image-20220416214635543"></p>
+<h4 id="节点列表"><a href="#节点列表" class="headerlink" title="节点列表"></a>节点列表</h4><p>通过分享好的链接即可导入进节点列表</p>
+<h4 id="节点订阅"><a href="#节点订阅" class="headerlink" title="节点订阅"></a>节点订阅</h4><p>点击左下角的<code>添加</code>按钮，将订阅url填进去，其他保持默认，保存并应用即可。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416215123378.png" alt="image-20220416215123378"></p>
+<p>保存好之后，要手动点击一下<code>手动订阅</code>才可以</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416215244981.png" alt="image-20220416215244981"></p>
+<h4 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h4><p>这里我尝试了一下，但是没有使用。</p>
+<p>因为需要所有的节点的<code>协议</code> 、<code>UUID</code>，<code>密码</code>，<code>地址</code>等配置都需要相同（端口可以不同），我这边没有满足，就没有去使用。</p>
+<h3 id="AdGuard-Home"><a href="#AdGuard-Home" class="headerlink" title="AdGuard Home"></a>AdGuard Home</h3><h4 id="基本设置-1"><a href="#基本设置-1" class="headerlink" title="基本设置"></a>基本设置</h4><p>选择 <code>启用</code>，重定向选择<code>作为dnsmasq的上游服务器</code>。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416215815211.png" alt="image-20220416215815211"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220008584.png" alt="image-20220416220008584"></p>
+<p>然后在左下角的<code>更多选项</code>里，分别添加<code>系统升级时保留文件</code>和<code>计划任务</code></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220119916.png" alt="image-20220416220119916"></p>
+<p>其配置如图所示</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220212092.png" alt="image-20220416220212092"></p>
+<h4 id="开始配置"><a href="#开始配置" class="headerlink" title="开始配置"></a>开始配置</h4><p>以上的配置保存并应用后，点击这里，跳转到<code>192.168.1.200:3000</code>，开始配置AdGuardHome。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220344253.png" alt="image-20220416220344253"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220545525.png" alt="image-20220416220545525"></p>
+<p>这里的网页管理界面的端口和DNS服务器的端口随便设置一个不冲突的端口即可。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220636504.png" alt="image-20220416220636504"></p>
+<p>然后就是设置一个访问web管理端的帐号密码。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220706697.png" alt="image-20220416220706697"></p>
+<p>配置好后，用刚才自己设置的帐号密码去登录。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220752266.png" alt="image-20220416220752266"></p>
+<h5 id="DNS设置"><a href="#DNS设置" class="headerlink" title="DNS设置"></a>DNS设置</h5><p>上游服务器这里设置我们的SmartDns服务器地址。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416220916817.png" alt="image-20220416220916817"></p>
+<p>Bootstrap DNS 服务器前两个填的是运营商的DNS。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416221009378.png" alt="image-20220416221009378"></p>
+<p>Bootstrap DNS 服务器的作用是使用这里填写的DNS服务器去解析上游DNS服务器。</p>
+<h5 id="过滤器-DNS封锁清单"><a href="#过滤器-DNS封锁清单" class="headerlink" title="过滤器-DNS封锁清单"></a>过滤器-DNS封锁清单</h5><p>这里发现一个问题就是，这个规则和本来我在浏览器插件用的Adguard的规则语法不完全通用。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416221257461.png" alt="image-20220416221257461"></p>
+<p>这里规则我填写的比较多，其实用不了这么多，可以自行选择，填写的越多理论上对网速的影响就相对越大。而且有的可能会”误杀”。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># AdGuard DNS filter</span><br><span class="line">https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt</span><br><span class="line"></span><br><span class="line"># HalfLife</span><br><span class="line">https://gitee.com/halflife/list/raw/master/ad.txt</span><br><span class="line"></span><br><span class="line"># anti-ad</span><br><span class="line">https://anti-ad.net/easylist.txt</span><br><span class="line"></span><br><span class="line"># Adblock-Rule-rule</span><br><span class="line">https://gitee.com/xinggsf/Adblock-Rule/raw/master/rule.txt</span><br><span class="line"></span><br><span class="line"># Adblock-Rule-mv</span><br><span class="line">https://gitee.com/xinggsf/Adblock-Rule/raw/master/mv.txt</span><br><span class="line"></span><br><span class="line"># filter_224_Chinese</span><br><span class="line">https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_224_Chinese/filter.txt</span><br><span class="line"></span><br><span class="line"># ChinaList2.0</span><br><span class="line">https://gitee.com/ADList/ChinaList2.0/raw/master/ChinaList2.0.txt</span><br><span class="line"></span><br><span class="line"># filter_2_English</span><br><span class="line">https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_2_English/filter.txt</span><br><span class="line"></span><br><span class="line"># anti-ad-adguard</span><br><span class="line">https://anti-ad.net/adguard.txt</span><br><span class="line"></span><br><span class="line"># neodevhost</span><br><span class="line">https://neodev.team/host</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h4><p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416221837739.png" alt="image-20220416221837739"></p>
+<h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><h3 id="网络-DHCP-DNS"><a href="#网络-DHCP-DNS" class="headerlink" title="网络-DHCP/DNS"></a>网络-DHCP/DNS</h3><p>DNS转发需要设置为AdGuard Home的DNS服务器地址。<code>192.168.1.200#9053</code></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416230841928.png" alt="image-20220416230841928"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231038536.png" alt="image-20220416231038536"></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231109497.png" alt="image-20220416231109497"></p>
+<h3 id="Turbo-ACC-网络加速设置"><a href="#Turbo-ACC-网络加速设置" class="headerlink" title="Turbo ACC 网络加速设置"></a>Turbo ACC 网络加速设置</h3><p>看到别人的博客里都有提到这个东西，但是我安装的这个docker的镜像<code>suling/openwrt</code>，似乎并不支持，虽然有这个选项卡，但是里面没有勾选的地方，只有一个DNS缓存。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231438350.png" alt="image-20220416231438350"></p>
+<p>我又尝试了安装<code>unifreq/openwrt-aarch64</code></p>
+<p>dockerhub地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/unifreq/openwrt-aarch64">https://hub.docker.com/r/unifreq/openwrt-aarch64</a></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231702179.png" alt="image-20220416231702179"></p>
+<p>这里提到了，映射一下目录才可以体验完整的turboacc功能。</p>
+<p>我生成一个容器后，发现确实多了一个BBR 拥塞控制算法。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231813660.png" alt="image-20220416231813660"></p>
+<p>并且在<code>防火墙</code>里也多了一个<code>FullCone-NAT</code>选项。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416231923952.png" alt="image-20220416231923952"></p>
+<p>于是我尝试使用<code>suling/openwrt</code>镜像映射目录，创建了容器出来后发现还是没有增加其他功能，可能容器作者给这部分砍掉了吧，既然没有这项功能，那就看个人选择吧，如果很想要这个功能，那就使用<code>unifreq/openwrt-aarch64</code>镜像吧，或者自己编译一个。</p>
+<h2 id="SMB网络共享"><a href="#SMB网络共享" class="headerlink" title="SMB网络共享"></a>SMB网络共享</h2><p>上文提到了我挂载了一块5T的硬盘，但只放了数据库，还剩将近4个T能用，不如正好用openwrt带的Smb共享出来，放一些<strong>学习</strong>资料。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416222235466.png" alt="image-20220416222235466"></p>
+<p>在kali里挂载硬盘的目录，创建一个<code>smb</code>文件夹，然后设置权限为777。</p>
+<p>通过<code>文件助手</code>，找到挂载硬盘的所在目录<code>/mnt/sda1/smb/</code>。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416222548839.png" alt="image-20220416222548839"></p>
+<h4 id="设置smb用户"><a href="#设置smb用户" class="headerlink" title="设置smb用户"></a>设置smb用户</h4><p>进入容器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 进入容器</span><br><span class="line">docker exec -it openwrt bash</span><br><span class="line"></span><br><span class="line"># 创建用户(不是root也行)</span><br><span class="line">smbpasswd -a root</span><br><span class="line"># 接下来输入的密码就是用户的密码</span><br></pre></td></tr></table></figure>
+
+
+<p>其他smb命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 删除用户 </span><br><span class="line">smbpasswd -x root</span><br><span class="line"># 禁用用户 </span><br><span class="line">smbpasswd -d root</span><br><span class="line"># 启用用户 </span><br><span class="line">smbpasswd -e root</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="配置文件共享"><a href="#配置文件共享" class="headerlink" title="配置文件共享"></a>配置文件共享</h4><p>接着使用<code>网络共享</code>功能，配置一下。</p>
+<p>在左下角添加应该共享目录，名称随意，路径为硬盘挂载的路径，允许用户 填刚才新建的用户。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416222753094.png" alt="image-20220416222753094"></p>
+<p>如果是要使用root用户的话，需要在<code>编辑模板</code>里，注释或删掉这行内容。</p>
+<p><code>    invalid users = root</code></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416223804805.png" alt="image-20220416223804805"></p>
+<p>其他保持默认即可。</p>
+<p>接着在Windows的资源管理器的地址栏里输入 <code>\\192.168.1.200</code>，输入刚才设置的用户和密码即可。</p>
+<p>接下来为了更方便我们平时使用，可以使用<code>映射网络驱动器</code>功能，</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416224429341.png" alt="image-20220416224429341"></p>
+<p>映射好之后，在<code>此电脑</code>里的<code>网络位置</code>里即可看到映射好的共享文件夹。</p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416224613737.png" alt="image-20220416224613737"></p>
+<h4 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h4><p>刚才在<code>文件共享</code>里的工作组设置的是<code>WORKGROUP</code>和我们本机的工作组一致，所以才不用在访问共享文件夹输入用户名的时候加上工作组，如果本机工作组和文件共享里的工作组不一致，需要在登录的时候加上工作组，例如：<code>WORKGROUP/root</code></p>
+<p><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220416224256637.png" alt="image-20220416224256637"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>因为是docker版本，网上的资料也有限，很多地方都要自己折腾。现在就只用了这些功能，其他还有很多功能可以通过安装软件包来使用，慢慢研究吧！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Riddler</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://riddlerm.github.io/posts/25115/">http://riddlerm.github.io/posts/25115/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://riddlerm.github.io" target="_blank">Riddler's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/">树莓派</a><a class="post-meta__tags" href="/tags/kali/">kali</a><a class="post-meta__tags" href="/tags/%E8%BD%AF%E8%B7%AF%E7%94%B1/">软路由</a><a class="post-meta__tags" href="/tags/openwrt/">openwrt</a></div><div class="post_share"><div class="social-share" data-image="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220417000133250.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/posts/12824/"><img class="prev-cover" src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220311193129819.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">记一次钓鱼网站检测</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/57456/" title="树莓派4B 安装Kali"><img class="cover" src="https://img-blog.csdnimg.cn/20210718214808135.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-04</div><div class="title">树莓派4B 安装Kali</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://thirdqq.qlogo.cn/g?b=oidb&amp;k=LMGBgwOams2fZdeTFTEk8g&amp;s=100" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Riddler</div><div class="author-info__description">Riddler's Blog</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RiddlerM"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85opwnwrt"><span class="toc-text">安装opwnwrt</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="toc-text">前期准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Docker"><span class="toc-text">安装Docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%95%9C%E5%83%8F"><span class="toc-text">选择镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="toc-text">安装步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%93%E5%BC%80%E7%BD%91%E5%8D%A1%E6%B7%B7%E6%9D%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">1.打开网卡混杂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C"><span class="toc-text">2.创建网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F"><span class="toc-text">3.拉取镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-text">4.创建并启动容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%B9%B6%E4%BF%AE%E6%94%B9%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0"><span class="toc-text">5.进入容器并修改相关参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%87%8D%E5%90%AF%E7%BD%91%E7%BB%9C"><span class="toc-text">6.重启网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF"><span class="toc-text">7.进入控制面板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%85%B3%E9%97%AD-DHCP-%E6%9C%8D%E5%8A%A1"><span class="toc-text">8.关闭 DHCP 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E4%B8%BB%E8%B7%AF%E7%94%B1-DHCP-%E8%AE%BE%E7%BD%AE"><span class="toc-text">9.主路由 DHCP 设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-text">10.重新连接路由器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#openwrt%E5%B1%95%E7%A4%BA"><span class="toc-text">openwrt展示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%95%8C%E9%9D%A2%E6%88%AA%E5%9B%BE"><span class="toc-text">界面截图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%88%97%E8%A1%A8%E6%88%AA%E5%9B%BE"><span class="toc-text">功能列表截图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#openwrt%E9%85%8D%E7%BD%AE"><span class="toc-text">openwrt配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="toc-text">安装插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="toc-text">配置常用插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SmartDns"><span class="toc-text">SmartDns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E8%AE%BE%E7%BD%AE"><span class="toc-text">常规设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="toc-text">第二服务器设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E6%B8%B8%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">上游服务器配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Passall"><span class="toc-text">Passall</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE"><span class="toc-text">基本设置</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81"><span class="toc-text">主要</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DNS"><span class="toc-text">DNS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F"><span class="toc-text">模式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E5%88%97%E8%A1%A8"><span class="toc-text">节点列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E8%AE%A2%E9%98%85"><span class="toc-text">节点订阅</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">负载均衡</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AdGuard-Home"><span class="toc-text">AdGuard Home</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE-1"><span class="toc-text">基本设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E9%85%8D%E7%BD%AE"><span class="toc-text">开始配置</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#DNS%E8%AE%BE%E7%BD%AE"><span class="toc-text">DNS设置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8-DNS%E5%B0%81%E9%94%81%E6%B8%85%E5%8D%95"><span class="toc-text">过滤器-DNS封锁清单</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-text">效果展示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="toc-text">系统配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-DHCP-DNS"><span class="toc-text">网络-DHCP&#x2F;DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Turbo-ACC-%E7%BD%91%E7%BB%9C%E5%8A%A0%E9%80%9F%E8%AE%BE%E7%BD%AE"><span class="toc-text">Turbo ACC 网络加速设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SMB%E7%BD%91%E7%BB%9C%E5%85%B1%E4%BA%AB"><span class="toc-text">SMB网络共享</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEsmb%E7%94%A8%E6%88%B7"><span class="toc-text">设置smb用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB"><span class="toc-text">配置文件共享</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-1"><span class="toc-text">注意事项</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/25115/" title="软路由折腾记"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220417000133250.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="软路由折腾记"/></a><div class="content"><a class="title" href="/posts/25115/" title="软路由折腾记">软路由折腾记</a><time datetime="2022-04-16T11:07:39.000Z" title="发表于 2022-04-16 19:07:39">2022-04-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/12824/" title="记一次钓鱼网站检测"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220311193129819.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="记一次钓鱼网站检测"/></a><div class="content"><a class="title" href="/posts/12824/" title="记一次钓鱼网站检测">记一次钓鱼网站检测</a><time datetime="2022-03-11T11:24:44.000Z" title="发表于 2022-03-11 19:24:44">2022-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/59900/" title="Badusb制作及CS免杀上线"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220224174207196.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Badusb制作及CS免杀上线"/></a><div class="content"><a class="title" href="/posts/59900/" title="Badusb制作及CS免杀上线">Badusb制作及CS免杀上线</a><time datetime="2022-02-24T12:32:10.000Z" title="发表于 2022-02-24 20:32:10">2022-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/27217/" title="利用腾讯云SCF实现兔小巢新反馈实时推送"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220131123628971.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用腾讯云SCF实现兔小巢新反馈实时推送"/></a><div class="content"><a class="title" href="/posts/27217/" title="利用腾讯云SCF实现兔小巢新反馈实时推送">利用腾讯云SCF实现兔小巢新反馈实时推送</a><time datetime="2022-01-31T02:16:05.000Z" title="发表于 2022-01-31 10:16:05">2022-01-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/45659/" title="Windows创建影子账户复现"><img src="https://riddlerblog.oss-cn-beijing.aliyuncs.com/imgs/image-20220107213619212.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows创建影子账户复现"/></a><div class="content"><a class="title" href="/posts/45659/" title="Windows创建影子账户复现">Windows创建影子账户复现</a><time datetime="2022-01-07T12:44:19.000Z" title="发表于 2022-01-07 20:44:19">2022-01-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Riddler</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://blog-api-m75hv7ilc-riddlerm.vercel.app',
+      avatar: 'wavatar',
+      avatarCDN: 'https://sdn.geekzu.org/avatar/',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline() 
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
