@@ -166,13 +166,6 @@
   </url>
   
   <url>
-    <loc>http://riddlerm.github.io/tags/Kali/</loc>
-    <lastmod>2022-04-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://riddlerm.github.io/tags/kali/</loc>
     <lastmod>2022-04-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -188,6 +181,13 @@
   
   <url>
     <loc>http://riddlerm.github.io/tags/openwrt/</loc>
+    <lastmod>2022-04-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://riddlerm.github.io/tags/Kali/</loc>
     <lastmod>2022-04-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
